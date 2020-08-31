@@ -1,7 +1,9 @@
 const express = require('express');
 const morgan = require('morgan');
+const cors = require('cors')
 
 const app = express();
+app.use(cors())
 
 morgan.token('req-body', (req, res) => JSON.stringify(req.body));
 
@@ -11,17 +13,17 @@ app.use(morgan(':method :url :status :res[content-length] - :response-time ms :r
 let persons = [
     {
         name: "Itzik",
-        phoneNumber: "050-7135983",
+        number: "050-7135983",
         id: 1
     },
     {
         name: "Nadav",
-        phoneNumber: "058-18736612",
+        number: "058-18736612",
         id: 2
     },
     {
         name: "Maddie",
-        phoneNumber: "052-21891981",
+        number: "052-21891981",
         id: 3
     }
 
@@ -43,11 +45,11 @@ app.get('/info', (req, res) => {
 app.post('/api/persons', (req, res) => {
     let newPerson = {
         name: req.body.name,
-        phoneNumber: req.body.phoneNumber,
+        number: req.body.number,
         id: generateID()
     }
 
-    if (!newPerson.name || !newPerson.phoneNumber) {
+    if (!newPerson.name || !newPerson.number) {
         return res.json({ error: "Missing name or number." });
     }
 
