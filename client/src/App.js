@@ -16,12 +16,12 @@ function App() {
   }, []);
 
   const handleDelete = (e) => {
-    axios.delete(`http://localhost:3001/api/persons/${e.target.id}`);
+    axios.delete(`/api/persons/${e.target.id}`);
     showPersonList();
   };
 
   const handleSubmit = async () => {
-    await axios.post("http://localhost:3001/api/persons", {
+    await axios.post("/api/persons", {
       name,
       number,
     });
