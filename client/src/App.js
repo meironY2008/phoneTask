@@ -7,7 +7,7 @@ function App() {
   const [number, setNumber] = useState();
 
   const showPersonList = async () => {
-    const { data } = await axios.get("http://localhost:3001/api/persons");
+    const { data } = await axios.get("/api/persons");
     setBook(data);
   };
 
