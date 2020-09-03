@@ -6,33 +6,35 @@ function App() {
   const [name, setName] = useState();
   const [number, setNumber] = useState();
 
-  const showPersonList = async () => {
+  const showPersonsList = async () => {
     const { data } = await axios.get("/api/persons");
     setBook(data);
   };
 
   useEffect(() => {
-    showPersonList();
+    showPersonsList();
   }, []);
 
   const handleDelete = (e) => {
     axios.delete(`/api/persons/${e.target.id}`);
-    showPersonList();
+    showPersonsList();
   };
 
   const handleSubmit = async () => {
-   const id = await axios.post("/api/persons", {
-      name,
-      number,
-    });
-    // console.log(id);
-    // if(id){
-    //   await axios.put(`/api/persons/${id}`, {
-    //     name,
-    //     number,
-    //   });
-    // }
-    showPersonList();
+    const inputArr = document.querySelectorAll("input");
+    inputArr.forEach((input) => (input.value = ""));
+    const { data } = await axios.get("/api/persons");
+    const exist = data.find((person) => person.name === name);
+    exist
+      ? await axios.put(`/api/persons/${exist.id}`, {
+          name,
+          number,
+        })
+      : await axios.post("/api/persons", {
+          name,
+          number,
+        });
+    showPersonsList();
   };
 
   return (
@@ -48,19 +50,20 @@ function App() {
           </li>
         ))}
       </ul>
-      <form onSubmit={handleSubmit}>
-        <input
-          onChange={(e) => setName(e.target.value)}
-          type="text"
-          placeholder="name"
-        />
-        <input
-          onChange={(e) => setNumber(e.target.value)}
-          type="text"
-          placeholder="number"
-        />
-        <button type="submit">Submit</button>
-      </form>
+
+      <input
+        onChange={(e) => setName(e.target.value)}
+        type="text"
+        placeholder="Name..."
+      />
+      <input
+        onChange={(e) => setNumber(e.target.value)}
+        type="text"
+        placeholder="Number..."
+      />
+      <button type="submit" onClick={() => handleSubmit()}>
+        Submit
+      </button>
     </div>
   );
 }
